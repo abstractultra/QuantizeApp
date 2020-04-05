@@ -3,27 +3,6 @@ import {Text, View, StyleSheet, FlatList, Button, Dimensions} from 'react-native
 import { createStackNavigator } from '@react-navigation/stack';
 import { Card, Image, Rating } from 'react-native-elements';
 
-const itemsForSale = [
-  {
-    id: 1,
-    name: "Purell",
-    price: 2.49,
-    stock: 4,
-    imageUrl: "http://sites.psu.edu/siowfa14/wp-content/uploads/sites/13467/2014/10/Purell.jpg",
-    type: "Hand Sanitizer",
-    seller: "Walmart"
-  },
-  {
-    id: 2,
-    name: "Face Masks",
-    price: 3.49,
-    stock: 3,
-    imageUrl: "https://ashutterbugslife.files.wordpress.com/2013/06/medical-surgical-mask.jpg",
-    type: "Mask",
-    seller: "Username"
-  }
-];
-
 const sellers = {
   Walmart: {
     rating: 5,
@@ -36,6 +15,15 @@ const sellers = {
 }
 
 function BuyScreen() {
+  const [itemsForSale, setItems] = React.useState([]);
+  async function fetchData() {
+    const response = await fetch("https://cathacks.herokuapp.com/get_item_data");
+    const json = await response.json();
+    setItems(json);
+  }
+  React.useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <View style={styles.container}>
       <FlatList
@@ -53,7 +41,7 @@ function BuyScreen() {
             <Rating
               imageSize={20}
               readonly
-              startingValue={sellers[item.seller].rating}
+              startingValue={sellers[item.seller] ? sellers[item.seller].rating : 0}
             />
             <View style={{padding:10}}>
               <Button title="Inquire"/>

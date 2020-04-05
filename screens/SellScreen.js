@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 function SellScreen() {
   return (
     <View style={styles.container}>
-      <Text>Hi</Text>
+      <Text>TODO</Text>
     </View>
   );
 }

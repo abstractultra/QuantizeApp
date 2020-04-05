@@ -1,11 +1,21 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Button} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as ImagePicker from 'expo-image-picker';
 
-function SellScreen() {
+function ProfileScreen() {
+  const [verificationStatus, setVerification] = React.useState(false);
   return (
     <View style={styles.container}>
-      <Text>Hi</Text>
+    { !verificationStatus ?
+      <Button title={"Verify"} onPress={()=>{
+        ImagePicker.getCameraPermissionsAsync()
+        .then(()=>ImagePicker.launchCameraAsync())
+        .then(()=>setVerification(true));
+      }}/>
+      :
+      <Text>Account verified!</Text>
+    }
     </View>
   );
 }
@@ -16,9 +26,9 @@ export default function StackNavigator() {
   return (
       <Stack.Navigator>
         <Stack.Screen
-          name="SellScreen"
-          component={SellScreen}
-          options={{ title: 'Sell' }}
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{ title: 'Profile' }}
         />
       </Stack.Navigator>
   );
